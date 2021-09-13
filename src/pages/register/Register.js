@@ -3,10 +3,16 @@ import {useState, useRef} from 'react';
 
 function Register() {
     const [email, setEmail] =useState("");
+    const [password, setPassword] = useState("");
     const emailRef= useRef();
+    const passwordRef = useRef();
 
     const handleSubmit = () => {
         setEmail(emailRef.current.value)
+    }
+
+    const handleFinish = () => {
+        setPassword(passwordRef.current.value)
     }
 
     return (
@@ -24,10 +30,20 @@ function Register() {
                 <h1>Unlimited movies, TV shows and more.</h1>
                 <h2>Watch anywhere. Cancel anytime.</h2>
                 <p>Ready to watch? Enter your email to create or restart your membership.</p>
-                <div className="input">
-                <input type="email" placeholder="email address" ref={emailRef}/>
-                <button className="registerButton" onClick={handleSubmit}> Get Started</button>
-                </div>
+                {
+                    !email?(
+                        <div className="input">
+                        <input type="email" placeholder="email address" ref={emailRef}/>
+                        <button className="registerButton" onClick={handleSubmit}> Get Started</button>
+                        </div>
+                    ):(
+                        <div className="input">
+                        <input type="password" placeholder="password" ref={passwordRef}/>
+                        <button className="registerButton" onClick={handleFinish}> Start</button>
+                        </div>
+                    )
+                }
+               
             </div>
         </div>
     )
