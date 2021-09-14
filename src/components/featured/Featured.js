@@ -1,12 +1,28 @@
 import './featured.scss';
 import { InfoOutlined, PlayArrow, SearchOutlined } from "@material-ui/icons";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Featured({type}) {
+    const [content, setContent] = useState({});
+
+    useEffect(() => {
+        const getRandomContent = async() => {
+            try{
+                const res = await axios.get(`/movies/random?type=${type}`)
+                setContent(res.data[0]);
+            }catch(err){
+                console.log(err);
+            }      
+        }
+        getRandomContent();
+    },[]);
+    console.log(content);
   return (
     <div className="featured">
         {type && (
             <div className="category">
-                <span>{type==="movie"? "Movies":"TV Shows"}</span>
+                <span>{type==="movies"? "Movies":"TV Shows"}</span>
                 <select name="genre" id="genre">
                     <option>
                         Genre
@@ -28,15 +44,16 @@ function Featured({type}) {
             </div>
         )}
       <img
-        src="https://thehoya.com/wp-content/uploads/2014/09/B7_2NightStand_DemarestFilms-600x328.png"
-        
+        src={content.img}
       />
       <div className="info">
-          <img
+          {/* <img
           src="https://occ-0-3195-3663.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABYeAllFpA8IPk_ofGDi6Ib7udEMhjBn32Q0zrvWzyzsVXmffhptUSXkwKpJ6q1li6QK8w7MN7XjAM4wb95-XTHxw8SbK_4buuCzy.webp?r=6d8"
-          alt=""/>
+          alt=""/> */}
+          <img
+          src={content.imgSm}/>
           <span className="desc">
-          Contrary to popular belief, Lorem Ipsum is not simply random text. 
+          {content.desc} 
           </span>
           <div className="buttons">
               <button className="play">
