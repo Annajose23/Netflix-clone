@@ -1,77 +1,52 @@
+import "./listitem.scss";
 import {
   PlayArrow,
-  ThumbUpAltOutlined,
   Add,
-  ThumbDownAltOutlined,
+  ThumbUpAltOutlined,
+  ThumbDownOutlined,
 } from "@material-ui/icons";
-import "./listitem.scss";
-import { useState, useEffect } from "react";
-import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { useState } from "react";
+import { useHistory } from 'react-router-dom';
 
-function ListItem({ index, item }) {
-  console.log(index, item)
-  const [movie, setMovie] = useState({});
+export default function ListItem({ index }) {
   const [isHovered, setIsHovered] = useState(false);
-
-  useEffect(() => {
-    const getMovie = async () => {
-      try{
-        const res = await axios.get("http://localhost:8800/api/movies/"+item,  {
-          header:{
-          token:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxM2ZlODhmMjI3MGVmMjc0MjczOWY2YSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMTU3ODU4MywiZXhwIjoxNjMyMDEwNTgzfQ.gJnpl5Gdg3driaofqXtYH2g7SbmKymCBSIkDelEWdEM'
-        }});
-        console.log(res.data)
-        setMovie(res.data);
-      }
-      catch(err){
-        console.log(err)
-      }
-    }
-    getMovie();
-  },[item]);
-  //const trailer =  "https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=139&oauth2_token_id=57447761";
+  const history = useHistory();
+  const trailer =
+    "https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=139&oauth2_token_id=57447761";
   return (
-    <Link to={{pathname: "/watch", movie:movie}}>
     <div
       className="listItem"
       style={{ left: isHovered && index * 225 - 50 + index * 2.5 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* <img
-        src="https://images.unsplash.com/photo-1520953027650-0067908555fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
-        alt=""
-      /> */}
       <img
-        src={movie.img}
+        src="https://occ-0-1723-92.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABU7D36jL6KiLG1xI8Xg_cZK-hYQj1L8yRxbQuB0rcLCnAk8AhEK5EM83QI71bRHUm0qOYxonD88gaThgDaPu7NuUfRg.jpg?r=4ee"
         alt=""
       />
       {isHovered && (
         <>
-          <video src={movie.trailer} autoPlay={true} loop />
+          <video src={trailer} autoPlay={true} loop />
           <div className="itemInfo">
             <div className="icons">
-              <PlayArrow className="icon"/>
+              <PlayArrow className="icon" onClick={() => history.push('/watch')} />
               <Add className="icon" />
-              <ThumbUpAltOutlined className="icon"/>
-              <ThumbDownAltOutlined className="icon" />
+              <ThumbUpAltOutlined className="icon" />
+              <ThumbDownOutlined className="icon" />
             </div>
             <div className="itemInfoTop">
-              <span>{movie.duration}</span>
-              <span className="limit">+{movie.limit}</span>
-              <span>{movie.year}</span>
+              <span>1 hour 14 mins</span>
+              <span className="limit">+16</span>
+              <span>1999</span>
             </div>
-            <div className="description">
-              {movie.desc}
+            <div className="desc">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Praesentium hic rem eveniet error possimus, neque ex doloribus.
             </div>
-            <div className="genre">{movie.genre}</div>
+            <div className="genre">Action</div>
           </div>
         </>
       )}
     </div>
-    </Link>
   );
 }
-
-export default ListItem;
